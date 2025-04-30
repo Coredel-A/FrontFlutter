@@ -1,6 +1,6 @@
 class OrdenDetalle {
   final int id;
-  final String producto; // Solo string, no objeto
+  final String producto; 
   final int productoId;
   final int cantidad;
   final double precioUnitario;
@@ -21,5 +21,12 @@ class OrdenDetalle {
       cantidad: json['cantidad'],
       precioUnitario: json['precio_unitario'].toDouble(),
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'producto_id': productoId,
+      'cantidad': cantidad,
+      'precio_unitario': precioUnitario,
+    };
   }
 }

@@ -32,14 +32,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
-      Usuario user = await apiService.register(name, email, password, phone, context);
-      
-      // Mostrar mensaje de éxito
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('¡Bienvenido, ${user.nombre}! Tu cuenta ha sido creada.'))
+      Usuario user = await apiService.register(
+        name,
+        email,
+        password,
+        phone,
+        context,
       );
-      
-      // Navegar a la pantalla principal
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '¡Bienvenido, ${user.nombre}! Tu cuenta ha sido creada.',
+          ),
+        ),
+      );
+
       Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
       setState(() {
@@ -65,23 +73,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               const Text(
                 "Regístrate",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              
+
               const SizedBox(height: 5),
-              
+
               const Text(
                 "Crea una cuenta para empezar a comprar",
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+                style: TextStyle(color: Colors.grey),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               if (errorMessage != null)
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -95,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(color: Colors.red.shade800),
                   ),
                 ),
-                
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Nombre completo",
@@ -104,12 +107,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 textCapitalization: TextCapitalization.words,
                 onSaved: (value) => name = value!.trim(),
-                validator: (value) =>
-                    value == null || value.isEmpty ? "El nombre es requerido" : null,
+                validator:
+                    (value) =>
+                        value == null || value.isEmpty
+                            ? "El nombre es requerido"
+                            : null,
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Email",
@@ -122,15 +128,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value == null || value.isEmpty) {
                     return "El email es requerido";
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value)) {
                     return "Ingresa un email válido";
                   }
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Teléfono",
@@ -139,12 +147,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 keyboardType: TextInputType.phone,
                 onSaved: (value) => phone = value!.trim(),
-                validator: (value) =>
-                    value == null || value.isEmpty ? "El teléfono es requerido" : null,
+                validator:
+                    (value) =>
+                        value == null || value.isEmpty
+                            ? "El teléfono es requerido"
+                            : null,
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Contraseña",
@@ -163,13 +174,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
                 onChanged: (value) {
-                  // Para actualizaciones en validación de confirmación
                   password = value;
                 },
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Confirmar contraseña",
@@ -188,33 +198,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 onSaved: (value) => passwordConfirm = value!,
               ),
-              
+
               const SizedBox(height: 25),
-              
+
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _register,
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                child:
+                    isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                          onPressed: _register,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            "CREAR CUENTA",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "CREAR CUENTA",
-                        style: TextStyle(
-                          fontSize: 16, 
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

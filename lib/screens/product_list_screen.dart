@@ -1,9 +1,8 @@
-// lib/screens/product_list_screen.dart
 import 'package:flutter/material.dart';
 import '../models/producto.dart';
 import '../services/api_service.dart';
 import '../widgets/product_card.dart';
-import '../screens/product_detail_screen.dart'; 
+import '../screens/product_detail_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
   final int categoryId;
@@ -32,18 +31,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.categoryName),
-      ),
+      appBar: AppBar(title: Text(widget.categoryName)),
       body: FutureBuilder<List<Producto>>(
         future: _productsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
               child: Text('No hay productos disponibles en esta categoría'),
@@ -61,14 +56,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
               itemBuilder: (context, index) {
                 final product = snapshot.data![index];
                 return ProductCard(
-                  producto: product, // Pasamos el objeto 'product' completo
+                  producto: product,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(
-                          productId: product.id,
-                        ),
+                        builder:
+                            (context) =>
+                                ProductDetailScreen(productId: product.id),
                       ),
                     );
                   },

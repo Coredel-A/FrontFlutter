@@ -19,12 +19,11 @@ class CategoryItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 80,
-        height: 102, // Aumentar la altura para evitar el desbordamiento
+        height: 102,
         margin: const EdgeInsets.only(right: 10),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Ajustar al tamaño mínimo necesario
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Imagen de la categoría
             ClipRRect(
               borderRadius: BorderRadius.circular(40),
               child: CachedNetworkImage(
@@ -32,19 +31,20 @@ class CategoryItem extends StatelessWidget {
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[300],
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.error),
-                ),
+                placeholder:
+                    (context, url) => Container(
+                      color: Colors.grey[300],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                errorWidget:
+                    (context, url, error) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error),
+                    ),
               ),
             ),
             const SizedBox(height: 8),
-            // Nombre de la categoría
-            Flexible( // Envolver el texto en un Flexible
+            Flexible(
               child: Text(
                 name,
                 textAlign: TextAlign.center,

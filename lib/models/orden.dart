@@ -43,5 +43,17 @@ class Orden {
       detalles: detallesList,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'usuario_id': usuarioId,
+      'estado': estado,
+      'tipo_envio': tipoEnvio,
+      'forma_pago': formaPago,
+      'total': total,
+      'seguimiento': seguimiento,
+      'detalles': detalles.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 

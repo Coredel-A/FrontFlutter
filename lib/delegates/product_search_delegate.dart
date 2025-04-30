@@ -50,13 +50,9 @@ class ProductSearchDelegate extends SearchDelegate<int?> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
+          return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No se encontraron productos'),
-          );
+          return const Center(child: Text('No se encontraron productos'));
         } else {
           final productos = snapshot.data!;
           return ListView.builder(
@@ -64,21 +60,21 @@ class ProductSearchDelegate extends SearchDelegate<int?> {
             itemBuilder: (context, index) {
               final producto = productos[index];
               return ListTile(
-                leading: producto.imagen != null
-                    ? Image.network(
-                        producto.imagen!,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.image_not_supported);
-                        },
-                      )
-                    : const Icon(Icons.image_not_supported),
+                leading:
+                    producto.imagen != null
+                        ? Image.network(
+                          producto.imagen!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.image_not_supported);
+                          },
+                        )
+                        : const Icon(Icons.image_not_supported),
                 title: Text(producto.nombre),
                 subtitle: Text('${producto.marca} - \$${producto.precio}'),
                 onTap: () {
-                  // Devolvemos el ID del producto seleccionado
                   close(context, producto.id);
                 },
               );

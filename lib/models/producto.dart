@@ -51,7 +51,7 @@ class Producto {
       'marca': marca,
       'modelo': modelo,
       'precio': precio,
-      'categoria_id': categoria.id,  // Enviamos solo el ID para operaciones POST/PUT
+      'categoria_id': categoria.id,  
       'imagen': imagen,
       'estado': estado,
     };

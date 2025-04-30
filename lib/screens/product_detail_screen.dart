@@ -4,11 +4,11 @@ import '../models/producto.dart';
 import '../services/api_service.dart';
 import '../providers/cart_provider.dart';
 
-// Convertir a StatefulWidget para tener un ProductDetailScreenState
 class ProductDetailScreen extends StatefulWidget {
   final int productId;
 
-  const ProductDetailScreen({Key? key, required this.productId}) : super(key: key);
+  const ProductDetailScreen({Key? key, required this.productId})
+    : super(key: key);
 
   @override
   ProductDetailScreenState createState() => ProductDetailScreenState();
@@ -31,7 +31,6 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         producto = loadedProduct;
       });
     } catch (e) {
-      // Manejar el error
       print('Error loading product: $e');
     }
   }
@@ -53,13 +52,18 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
         ],
       ),
-      body: producto == null
-          ? const Center(child: CircularProgressIndicator())
-          : _buildProductDetail(context, producto!, cartProvider),
+      body:
+          producto == null
+              ? const Center(child: CircularProgressIndicator())
+              : _buildProductDetail(context, producto!, cartProvider),
     );
   }
 
-  Widget _buildProductDetail(BuildContext context, Producto producto, CartProvider cartProvider) {
+  Widget _buildProductDetail(
+    BuildContext context,
+    Producto producto,
+    CartProvider cartProvider,
+  ) {
     final bool isInCart = cartProvider.isInCart(producto.id);
 
     return SingleChildScrollView(
@@ -68,7 +72,6 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagen del producto
             if (producto.imagen != null)
               Center(
                 child: Image.network(
@@ -83,14 +86,13 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
 
             const SizedBox(height: 16),
 
-            // Título, marca y precio
             Text(
               producto.nombre,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -104,9 +106,9 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             Text(
               'Precio: \$${producto.precio.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -114,34 +116,28 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
-            // Descripción
-            Text(
-              'Descripción',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            
+
+            Text('Descripción', style: Theme.of(context).textTheme.titleLarge),
+
             const SizedBox(height: 8),
-            
+
             Text(producto.descripcion),
-            
+
             const SizedBox(height: 16),
-            
-            // Especificaciones
+
             Text(
               'Especificaciones',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             Text(producto.especificaciones),
-            
+
             const SizedBox(height: 24),
-            
-            // Botón para añadir al carrito
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -167,22 +163,19 @@ class ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     );
                   } else {
-                    // Si ya está en el carrito, ofrecer ir al carrito
                     Navigator.pushNamed(context, '/cart');
                   }
                 },
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
-            // Botón para comprar ahora
+
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
                 child: const Text('Comprar ahora'),
                 onPressed: () {
-                  // Añadir al carrito y redirigir inmediatamente al checkout
                   if (!isInCart) {
                     cartProvider.addItem(producto);
                   }

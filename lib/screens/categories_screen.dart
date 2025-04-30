@@ -1,8 +1,6 @@
-// lib/screens/categories_screen.dart
 import 'package:flutter/material.dart';
 import '../models/categoria.dart';
 import '../services/api_service.dart';
-//import '../widgets/category_item.dart';
 import 'product_list_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -25,22 +23,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Categorías'),
-      ),
+      appBar: AppBar(title: const Text('Categorías')),
       body: FutureBuilder<List<Categoria>>(
         future: _categoriesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text('No hay categorías disponibles'),
-            );
+            return const Center(child: Text('No hay categorías disponibles'));
           } else {
             return GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -58,10 +50,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductListScreen(
-                          categoryId: category.id,
-                          categoryName: category.nombre,
-                        ),
+                        builder:
+                            (context) => ProductListScreen(
+                              categoryId: category.id,
+                              categoryName: category.nombre,
+                            ),
                       ),
                     );
                   },

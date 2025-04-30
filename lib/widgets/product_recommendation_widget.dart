@@ -11,10 +11,12 @@ class ProductRecommendationWidget extends StatefulWidget {
   const ProductRecommendationWidget({Key? key}) : super(key: key);
 
   @override
-  State<ProductRecommendationWidget> createState() => _ProductRecommendationWidgetState();
+  State<ProductRecommendationWidget> createState() =>
+      _ProductRecommendationWidgetState();
 }
 
-class _ProductRecommendationWidgetState extends State<ProductRecommendationWidget> {
+class _ProductRecommendationWidgetState
+    extends State<ProductRecommendationWidget> {
   late Future<List<Producto>> _recommendedProductsFuture;
   bool _isLoading = true;
 
@@ -27,7 +29,6 @@ class _ProductRecommendationWidgetState extends State<ProductRecommendationWidge
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Recargar recomendaciones cuando cambie el carrito
     final cartProvider = Provider.of<CartProvider>(context);
     if (cartProvider.itemCount > 0) {
       _loadRecommendations();
@@ -37,34 +38,35 @@ class _ProductRecommendationWidgetState extends State<ProductRecommendationWidge
   void _loadRecommendations() {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final apiService = Provider.of<ApiService>(context, listen: false);
-    
+
     if (cartProvider.itemCount > 0) {
       setState(() => _isLoading = true);
-      
-      // Obtener los IDs de los productos en el carrito
+
       final productIds = cartProvider.items.keys.toList();
-      
-      // Cargar recomendaciones
-      _recommendedProductsFuture = apiService.getRecommendedProducts(productIds);
-      
-      _recommendedProductsFuture.then((_) {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
-      }).catchError((error) {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
-        print('Error cargando recomendaciones: $error');
-      });
+
+      _recommendedProductsFuture = apiService.getRecommendedProducts(
+        productIds,
+      );
+
+      _recommendedProductsFuture
+          .then((_) {
+            if (mounted) {
+              setState(() => _isLoading = false);
+            }
+          })
+          .catchError((error) {
+            if (mounted) {
+              setState(() => _isLoading = false);
+            }
+            print('Error cargando recomendaciones: $error');
+          });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    
-    // Si el carrito está vacío, no mostramos nada
+
     if (cartProvider.itemCount == 0) {
       return const SizedBox.shrink();
     }
@@ -76,20 +78,17 @@ class _ProductRecommendationWidgetState extends State<ProductRecommendationWidge
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Recomendados para ti',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         _isLoading
-          ? const Center(
+            ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: CircularProgressIndicator(),
               ),
             )
-          : FutureBuilder<List<Producto>>(
+            : FutureBuilder<List<Producto>>(
               future: _recommendedProductsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -115,13 +114,13 @@ class _ProductRecommendationWidgetState extends State<ProductRecommendationWidge
                   );
                 } else {
                   final recommendations = snapshot.data!;
-                  // Limitamos a máximo 4 recomendaciones
-                  final limitedRecommendations = recommendations.length > 4 
-                      ? recommendations.sublist(0, 4) 
-                      : recommendations;
-                      
+                  final limitedRecommendations =
+                      recommendations.length > 4
+                          ? recommendations.sublist(0, 4)
+                          : recommendations;
+
                   return SizedBox(
-                    height: 235, // Altura fija para la lista horizontal
+                    height: 235,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -129,14 +128,16 @@ class _ProductRecommendationWidgetState extends State<ProductRecommendationWidge
                       itemBuilder: (ctx, index) {
                         final producto = limitedRecommendations[index];
                         return SizedBox(
-                          width: 160, // Ancho fijo para cada tarjeta
+                          width: 160,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4.0,
+                            ),
                             child: ProductCard(
                               producto: producto,
                               onTap: () {
                                 Navigator.pushNamed(
-                                  context, 
+                                  context,
                                   '/product-detail',
                                   arguments: producto.id,
                                 );

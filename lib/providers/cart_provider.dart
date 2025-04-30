@@ -5,10 +5,7 @@ class CartItem {
   final Producto producto;
   int cantidad;
 
-  CartItem({
-    required this.producto,
-    this.cantidad = 1,
-  });
+  CartItem({required this.producto, this.cantidad = 1});
 
   double get subtotal => producto.precio * cantidad;
 }
@@ -38,7 +35,6 @@ class CartProvider with ChangeNotifier {
 
   void addItem(Producto producto, {int cantidad = 1}) {
     if (_items.containsKey(producto.id)) {
-      // Incrementar cantidad si ya existe
       _items.update(
         producto.id,
         (existingItem) => CartItem(
@@ -47,13 +43,9 @@ class CartProvider with ChangeNotifier {
         ),
       );
     } else {
-      // Añadir nuevo item
       _items.putIfAbsent(
         producto.id,
-        () => CartItem(
-          producto: producto,
-          cantidad: cantidad,
-        ),
+        () => CartItem(producto: producto, cantidad: cantidad),
       );
     }
     notifyListeners();
@@ -70,10 +62,8 @@ class CartProvider with ChangeNotifier {
     } else if (_items.containsKey(productId)) {
       _items.update(
         productId,
-        (existingItem) => CartItem(
-          producto: existingItem.producto,
-          cantidad: newQuantity,
-        ),
+        (existingItem) =>
+            CartItem(producto: existingItem.producto, cantidad: newQuantity),
       );
       notifyListeners();
     }

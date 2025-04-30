@@ -2,13 +2,13 @@ class Categoria {
   final int id;
   final String nombre;
   final String descripcion;
-  final String? imagen;  // Añadimos el campo imagen como opcional
+  final String? imagen;
 
   Categoria({
     required this.id,
     required this.nombre,
     required this.descripcion,
-    this.imagen,  // Opcional porque puede ser null
+    this.imagen,
   });
 
   factory Categoria.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class Categoria {
       id: json['id'],
       nombre: json['nombre'],
       descripcion: json['descripcion'] ?? '',
-      imagen: json['imagen'],  // Capturamos la URL de la imagen
+      imagen: json['imagen'],
     );
   }
 

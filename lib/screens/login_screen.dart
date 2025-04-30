@@ -30,12 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
       Usuario user = await apiService.login(email, password, context);
-      
+
       // Mostrar mensaje de bienvenida (opcional)
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('¡Bienvenido, ${user.nombre}!'))
-      );
-      
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('¡Bienvenido, ${user.nombre}!')));
+
       // Navegar a la ruta '/home'
       Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               // Logo o imagen (opcional)
               const SizedBox(height: 20),
-              
+
               if (errorMessage != null)
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: Colors.red.shade800),
                   ),
                 ),
-                
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Email",
@@ -89,15 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value == null || value.isEmpty) {
                     return "El email es requerido";
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value)) {
                     return "Ingresa un email válido";
                   }
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: "Contraseña",
@@ -106,36 +108,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 obscureText: true,
                 onSaved: (value) => password = value!,
-                validator: (value) =>
-                    value == null || value.isEmpty ? "La contraseña es requerida" : null,
+                validator:
+                    (value) =>
+                        value == null || value.isEmpty
+                            ? "La contraseña es requerida"
+                            : null,
               ),
-              
+
               const SizedBox(height: 25),
-              
+
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                child:
+                    isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                          onPressed: _login,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            "INICIAR SESIÓN",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "INICIAR SESIÓN",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               TextButton(
                 onPressed: () {
                   Navigator.push(
